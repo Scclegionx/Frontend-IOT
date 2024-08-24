@@ -1,0 +1,133 @@
+.data-card {
+    background: #ffffff; /* Màu nền trắng */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    border-radius: 15px; /* Bo tròn góc */
+    padding: 20px;
+    margin: 20px 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.data-card:hover {
+    transform: translateY(-5px); /* Hiệu ứng nâng khi hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    padding: 10px;
+    border-radius: 10px; /* Bo tròn góc cho phần chứa bảng */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng cho phần chứa bảng */
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse; /* Bỏ viền giữa các ô */
+    background-color: #ecf0f1; /* Màu nền bảng */
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    text-align: center;
+    color: #2c3e50; /* Màu chữ */
+    border-bottom: 1px solid #bdc3c7; /* Viền dưới */
+}
+
+.table th {
+    background-color: #16a085; /* Màu nền header bảng */
+    color: white; /* Màu chữ header */
+}
+
+.table tr:hover {
+    background-color: #bdc3c7; /* Màu nền khi hover */
+}
+.icon-text-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Căn giữa biểu tượng và văn bản */
+}
+
+.icon-text-container .icon {
+    margin-right: 8px; /* Khoảng cách giữa biểu tượng và văn bản */
+}
+.table td {
+    position: relative;
+}
+
+.table td::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background: #16a085; /* Màu viền dưới của hàng khi hover */
+    transition: width 0.3s ease;
+}
+
+.table td:hover::before {
+    width: 100%;
+}
+
+.table-container {
+    border-radius: 15px;
+    border: 2px solid #16a085; /* Viền tông màu chủ đạo */
+}
+
+.data-icon {
+    margin-right: 8px;
+    vertical-align: middle;
+    font-size: 18px; /* Kích thước của icon */
+}
+
+.icon.device {
+    color: #2980b9; /* Màu icon thiết bị */
+}
+
+
+
+
+/* css cho loc theo ngay o ActionHistory */
+
+.date-filter {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: #16a085;
+}
+
+.date-filter label {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    margin-right: 20px;
+}
+
+.date-filter input {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #bdc3c7;
+    margin-top: 5px;
+}
+
+.date-filter input[type="date"] {
+    width: 150px;
+}
+.search-button {
+    background-color: #16a085; /* Màu nền nút tìm kiếm */
+    color: white; /* Màu chữ nút tìm kiếm */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-left: 20px;
+}
+
+.search-button:hover {
+    background-color: #1abc9c; /* Màu nền nút tìm kiếm khi hover */
+}
+

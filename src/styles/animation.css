@@ -1,0 +1,102 @@
+.content-container {
+    padding: 20px;
+    overflow: hidden;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleUp {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animated-enter {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.animated-enter-scale {
+    animation: scaleUp 0.6s ease-out;
+}
+
+/* device button animate */
+
+
+.device-control {
+    text-align: center;
+    padding: 20px;
+}
+
+.device-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.device-button {
+    background: #ffffff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.device-button.on {
+    background: #16a085; /* Green background when the device is on */
+    color: #ffffff; /* White text color when the device is on */
+}
+
+.device-button.off {
+    background: #e74c3c; /* Red background when the device is off */
+    color: #ffffff; /* White text color when the device is off */
+}
+
+/* Icon styling */
+.icon {
+    font-size: 24px;
+    margin-right: 10px;
+    transition: transform 0.5s ease;
+}
+
+/* Rotation animation for fan icon */
+.device-button.on .icon.fan-rotate {
+    animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Light bulb effect */
+.device-button.on .icon.light-on {
+    color: #f7e05c; /* Color for light icon when on */
+}
+
+.device-button.off .icon.light-on {
+    color: #d3d3d3; /* Color for light icon when off */
+}
+

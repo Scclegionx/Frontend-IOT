@@ -1,0 +1,33 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    background-color: #16a085; /* Màu nền của nút phân trang */
+    color: white; /* Màu chữ trên nút */
+    border: 1px solid #16a085; /* Viền nút */
+    border-radius: 5px; /* Bo tròn góc của nút */
+    padding: 10px 20px; /* Khoảng cách bên trong nút */
+    margin: 0 5px; /* Khoảng cách giữa các nút */
+    cursor: pointer;
+    font-size: 16px; /* Kích thước chữ */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.pagination button:hover {
+    background-color: #1abc9c; /* Màu nền khi hover */
+    transform: scale(1.05); /* Phóng to nút khi hover */
+}
+
+.pagination button.active {
+    background-color: #1abc9c; /* Màu nền của nút trang hiện tại */
+    border: 1px solid #1abc9c; /* Viền của nút trang hiện tại */
+}
+
+.pagination button:disabled {
+    background-color: #bdc3c7; /* Màu nền cho nút bị vô hiệu hóa */
+    border: 1px solid #bdc3c7; /* Viền cho nút bị vô hiệu hóa */
+    cursor: not-allowed; /* Con trỏ khi hover trên nút bị vô hiệu hóa */
+}

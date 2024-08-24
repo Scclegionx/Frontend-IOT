@@ -1,0 +1,48 @@
+.device-control h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.device-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.device-button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-size: 16px;
+    color: white;
+    background: #bdc3c7;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.device-button.on {
+    background: #2ecc71;
+}
+
+.device-button.off {
+    background: #e74c3c;
+}
+
+.device-button:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.device-button .icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.device-button span {
+    font-weight: bold;
+}

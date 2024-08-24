@@ -1,0 +1,146 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 240px;
+    background-color: #2c3e50;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: width 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar.closed {
+    width: 60px;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-size: 18px;
+    border-radius: 10px;
+}
+
+.menu-item svg {
+    font-size: 24px; /* Đảm bảo icon luôn giữ nguyên kích thước */
+    min-width: 24px; /* Đảm bảo kích thước icon không thay đổi */
+    transition: font-size 0.3s ease;
+}
+
+.sidebar.closed .menu-item svg {
+    font-size: 24px; /* Đảm bảo kích thước icon không thay đổi khi Sidebar thu gọn */
+}
+
+.menu-item span {
+    margin-left: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    opacity: 1;
+    transition: opacity 0.3s ease, width 0.3s ease;
+}
+
+.sidebar.closed .menu-item span {
+    opacity: 0;
+    width: 0;
+    transition: opacity 0.3s ease, width 0.3s ease;
+}
+
+.menu-item:hover {
+    background-color: rgba(52, 73, 94, 0.8);
+}
+
+.menu-item.active {
+    position: relative;
+    background: linear-gradient(135deg, #16a085, #1abc9c);
+    overflow: hidden;
+    border-radius: 20px;
+    z-index: 1;
+}
+
+.menu-item.active::before {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(135deg, #16a085, #1abc9c);
+    border-radius: 40%;
+    z-index: -1;
+    transform: translateX(-50%) translateY(50%);
+    transition: transform 0.6s ease;
+}
+
+.menu-item.active:hover::before {
+    transform: translateX(-50%) translateY(0);
+}
+
+.menu-item.active::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: inherit;
+    border-radius: 40%;
+    z-index: -1;
+    transform: translateX(-50%) translateY(-50%);
+    transition: transform 0.6s ease;
+}
+
+.menu-item.active:hover::after {
+    transform: translateX(-50%) translateY(0);
+}
+
+@keyframes waterDrop {
+    0% {
+        clip-path: circle(0% at 50% 50%);
+    }
+    50% {
+        clip-path: circle(75% at 50% 50%);
+    }
+    100% {
+        clip-path: circle(100% at 50% 50%);
+    }
+}
+
+.menu-item.active {
+    animation: waterDrop 0.6s ease-in-out;
+}
+
+.toggle-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    padding: 15px;
+    cursor: pointer;
+    outline: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.toggle-button:hover {
+    color: #16a085;
+}
+
+.content-container {
+    margin-left: 240px;
+    transition: margin-left 0.3s ease;
+    padding: 20px;
+}
+
+.sidebar.closed ~ .content-container {
+    margin-left: 60px;
+}

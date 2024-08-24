@@ -1,0 +1,13 @@
+.heading-card {
+    background: #16a085; /* Màu nền trắng */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    border-radius: 15px; /* Bo tròn góc */
+    padding: 20px;
+    margin: 0 auto 20px auto; /* Khoảng cách giữa card tiêu đề và các card khác */
+    text-align: center;
+    width: 100%; /* Đảm bảo card tiêu đề có độ rộng đầy đủ */
+    max-width: 1200px; /* Tối đa độ rộng của card tiêu đề */
+    color: #ffffff;
+    font-size: 2.5em;
+}
+
