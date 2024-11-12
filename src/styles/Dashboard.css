@@ -16,7 +16,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     color: white;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s, background 1.5s ease;
 }
 
 .card h2 {
@@ -28,17 +28,17 @@
     font-weight: bold;
 }
 
-.temperature-card {
-    background: linear-gradient(135deg, #f39c12, #e67e22);
-}
+/*.temperature-card {*/
+/*    background: linear-gradient(135deg, #f39c12, #e67e22);*/
+/*}*/
 
-.humidity-card {
-    background: linear-gradient(135deg, #3498db, #2980b9);
-}
+/*.humidity-card {*/
+/*    background: linear-gradient(135deg, #3498db, #2980b9);*/
+/*}*/
 
-.light-card {
-    background: linear-gradient(135deg, #9b59b6, #8e44ad);
-}
+/*.light-card {*/
+/*    background: linear-gradient(135deg, #9b59b6, #8e44ad);*/
+/*}*/
 
 .card:hover {
     transform: translateY(-10px);

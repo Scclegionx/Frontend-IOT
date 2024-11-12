@@ -131,3 +131,81 @@
     background-color: #1abc9c; /* Màu nền nút tìm kiếm khi hover */
 }
 
+
+/* form range  */
+.filter-container {
+    background: #ffffff; /* Màu nền trắng */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    border-radius: 15px; /* Bo tròn góc */
+    padding: 20px;
+    margin: 20px 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: #16a085; /* Màu chữ chính của filter */
+}
+
+.filter-container:hover {
+    transform: translateY(-5px); /* Hiệu ứng nâng khi hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.filter-container h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #16a085; /* Tông màu chủ đạo cho header filter */
+    font-size: 24px;
+}
+
+.filter-container form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.filter-container input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #bdc3c7;
+    font-size: 16px;
+    width: 180px; /* Kích thước của các input */
+    transition: border-color 0.3s ease;
+}
+
+.filter-container input:focus {
+    outline: none;
+    border-color: #16a085; /* Đổi màu viền khi input được focus */
+}
+
+.filter-container button {
+    background-color: #16a085; /* Màu nền nút tìm kiếm */
+    color: white; /* Màu chữ nút tìm kiếm */
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-left: 20px;
+}
+
+.filter-container button:hover {
+    background-color: #1abc9c; /* Màu nền nút tìm kiếm khi hover */
+}
+
+/* Style cho các input số */
+.filter-container input[type="number"] {
+    width: 140px;
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+    .filter-container form {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .filter-container input, .filter-container button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}

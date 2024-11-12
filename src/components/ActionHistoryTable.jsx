@@ -1,20 +1,11 @@
-import React, { useState } from 'react';
+// Các import giữ nguyên
+import React, { useState, useEffect, useCallback } from 'react';
 import { FaFan, FaLightbulb } from 'react-icons/fa';
-import '../styles/table.css'; // Giả sử chứa các kiểu dáng cho bảng
-import '../styles/pagination.css'; // Giả sử chứa các kiểu dáng cho phân trang
-
-const actionData = [
-    { device: 'Fan 1', action: 'Turned On', time: '2024-08-21 14:00' },
-    { device: 'Light', action: 'Turned Off', time: '2024-08-21 15:00' },
-    { device: 'Fan 2', action: 'Turned On', time: '2024-08-22 08:30' },
-    { device: 'Fan 1', action: 'Turned Off', time: '2024-08-22 10:00' },
-    { device: 'Light', action: 'Turned On', time: '2024-08-23 12:00' },
-    { device: 'Fan 2', action: 'Turned Off', time: '2024-08-23 14:00' },
-    { device: 'Light', action: 'Turned Off', time: '2024-08-24 16:00' },
-    { device: 'Fan 1', action: 'Turned On', time: '2024-08-24 18:00' },
-    { device: 'Fan 2', action: 'Turned On', time: '2024-08-25 08:30' },
-    { device: 'Light', action: 'Turned On', time: '2024-08-25 10:00' },
-];
+import axios from 'axios';
+import { formatInTimeZone } from 'date-fns-tz';
+import debounce from 'lodash.debounce';
+import '../styles/table.css';
+import '../styles/pagination.css';
 
 const getDeviceIcon = (device) => {
     if (device.toLowerCase().includes('fan')) return <FaFan className="icon device" />;
@@ -23,60 +14,135 @@ const getDeviceIcon = (device) => {
 };
 
 const ActionHistoryTable = () => {
+    const [actionData, setActionData] = useState([]);
+    const [sortConfig, setSortConfig] = useState({ key: 'timestamp', direction: 'asc' });
     const [currentPage, setCurrentPage] = useState(1);
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [filteredData, setFilteredData] = useState(actionData);
-    const rowsPerPage = 5;
+    const [totalPages, setTotalPages] = useState(1);
+    const rowsPerPage = 10;
+
+    // Lưu trạng thái của form range
+    const [rangeFilters, setRangeFilters] = useState({
+        start: '',
+        end: ''
+    });
+
+    const [isRangeActive, setIsRangeActive] = useState(false);
+
+    useEffect(() => {
+        if (isRangeActive) {
+            fetchRangeFilteredData(currentPage, rangeFilters);
+        } else {
+            fetchSortedData(sortConfig.key, sortConfig.direction, currentPage);
+        }
+    }, [sortConfig, currentPage, isRangeActive]);
+
+    // Hàm gọi API để lấy dữ liệu sorted và phân trang
+    const fetchSortedData = async (field, order, page) => {
+        try {
+            const response = await axios.get('http://localhost:3000/api/actionHistory/sortByTimestamp', {
+                params: {
+                    field,
+                    order,
+                    page,
+                    limit: rowsPerPage
+                }
+            });
+            setActionData(response.data.data || []);
+            setTotalPages(response.data.totalPages || 1);
+        } catch (error) {
+            console.error('Error fetching sorted data:', error);
+            setActionData([]);
+        }
+    };
+
+    // Hàm gọi API để lọc theo range và phân trang
+    const fetchRangeFilteredData = async (page, filters) => {
+        try {
+            const response = await axios.get('http://localhost:3000/api/actionHistory/range', {
+                params: {
+                    start: filters.start,
+                    end: filters.end,
+                    page,
+                    limit: rowsPerPage
+                }
+            });
+            setActionData(response.data.data || []);
+            setTotalPages(response.data.totalPages || 1);
+        } catch (error) {
+            console.error('Error fetching range-filtered data:', error);
+            setActionData([]);
+        }
+    };
+
+    // Sử dụng useCallback để đảm bảo debounce không bị tạo lại mỗi lần component render
+    const debouncedFetchRangeData = useCallback(
+        debounce((newFilters) => {
+            setRangeFilters(newFilters);
+            setIsRangeActive(true);
+            setCurrentPage(1); // Reset về trang đầu khi lọc
+            fetchRangeFilteredData(1, newFilters); // Gọi dữ liệu với range
+        }, 500),
+        [] // Empty dependency array ensures debounce only initializes once
+    );
+
+    const handleRangeFilterChange = (e) => {
+        const { name, value } = e.target;
+        const newFilters = {
+            ...rangeFilters,
+            [name]: value
+        };
+        debouncedFetchRangeData(newFilters);
+    };
+
+    const handleSortChange = (field) => {
+        const order = sortConfig.key === field && sortConfig.direction === 'asc' ? 'desc' : 'asc';
+        setSortConfig({ key: field, direction: order });
+        setCurrentPage(1); // Reset về trang đầu khi thay đổi sort
+        setIsRangeActive(false); // Tắt lọc range khi thay đổi sort
+    };
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
 
-    const handleStartDateChange = (e) => setStartDate(e.target.value);
-    const handleEndDateChange = (e) => setEndDate(e.target.value);
-
-    const handleSearch = () => {
-        const start = startDate ? new Date(startDate) : new Date(-8640000000000000);
-        const end = endDate ? new Date(endDate) : new Date(8640000000000000);
-
-        const filtered = actionData.filter((row) => {
-            const actionDate = new Date(row.time.split(' ')[0]);
-            return actionDate >= start && actionDate <= end;
-        });
-
-        setFilteredData(filtered);
-        setCurrentPage(1); // Reset to the first page after filtering
+    const formatDate = (timestamp) => {
+        return formatInTimeZone(new Date(timestamp), 'UTC', "dd/MM/yyyy HH:mm:ss 'UTC'");
     };
-
-    const paginatedData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
     return (
         <div className="card">
+            <div className="filter-container">
+                <h3>Filter by Range</h3>
+                <form>
+                    <input
+                        type="datetime-local"
+                        name="start"
+                        value={rangeFilters.start}
+                        onChange={handleRangeFilterChange}
+                    />
+                    <input
+                        type="datetime-local"
+                        name="end"
+                        value={rangeFilters.end}
+                        onChange={handleRangeFilterChange}
+                    />
+                </form>
+            </div>
+
             <div className="table-container">
-                <div className="date-filter">
-                    <label>
-                        Start Date:
-                        <input type="date" value={startDate} onChange={handleStartDateChange} />
-                    </label>
-                    <label>
-                        End Date:
-                        <input type="date" value={endDate} onChange={handleEndDateChange} />
-                    </label>
-                    <button className="search-button" onClick={handleSearch}>Search</button>
-                </div>
                 <table className="table">
                     <thead>
                     <tr>
+                        <th onClick={() => handleSortChange('timestamp')}>Time</th>
                         <th>Device</th>
                         <th>Action</th>
-                        <th>Time</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {paginatedData.length > 0 ? (
-                        paginatedData.map((row, index) => (
+                    {actionData.length > 0 ? (
+                        actionData.map((row, index) => (
                             <tr key={index}>
+                                <td>{formatDate(row.timestamp)}</td>
                                 <td>
                                     <div className="icon-text-container">
                                         {getDeviceIcon(row.device)}
@@ -84,16 +150,16 @@ const ActionHistoryTable = () => {
                                     </div>
                                 </td>
                                 <td>{row.action}</td>
-                                <td>{row.time}</td>
                             </tr>
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="3">No data available</td>
+                            <td colSpan="3" style={{ textAlign: 'center' }}>No data available</td>
                         </tr>
                     )}
                     </tbody>
                 </table>
+
                 <div className="pagination">
                     <button
                         onClick={() => handlePageChange(currentPage - 1)}
@@ -101,7 +167,7 @@ const ActionHistoryTable = () => {
                     >
                         Previous
                     </button>
-                    {Array.from({ length: Math.ceil(filteredData.length / rowsPerPage) }, (_, index) => (
+                    {Array.from({ length: totalPages }, (_, index) => (
                         <button
                             key={index}
                             onClick={() => handlePageChange(index + 1)}
@@ -112,7 +178,7 @@ const ActionHistoryTable = () => {
                     ))}
                     <button
                         onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === Math.ceil(filteredData.length / rowsPerPage)}
+                        disabled={currentPage === totalPages}
                     >
                         Next
                     </button>
@@ -120,6 +186,6 @@ const ActionHistoryTable = () => {
             </div>
         </div>
     );
-}
+};
 
 export default ActionHistoryTable;
